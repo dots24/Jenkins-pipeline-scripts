@@ -22,9 +22,9 @@ pipeline{
                 sh """
                     scp -o StrictHostKeyChecking=no /home/jenkins/workspace/mavenpipe/target/dot_webapp-1-SNAPSHOT.war ec2-user@10.100.2.112:/opt/apache-tomcat-8.5.69/webapps/
 					                    
-                    ssh ec2-user@10.100.2.112 /home/ec2-user/apache-tomcat-9.0.50/bin/shutdown.sh
+                    ssh ec2-user@10.100.2.112 /opt/apache-tomcat-8.5.69/bin/shutdown.sh
                     
-                    ssh ec2-user@10.100.2.112 /home/ec2-user/apache-tomcat-9.0.50/bin/startup.sh
+                    ssh ec2-user@10.100.2.112 /opt/apache-tomcat-8.5.69/bin/startup.sh
                 
                 """
             }
