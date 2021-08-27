@@ -7,7 +7,7 @@ pipeline{
     stages{
         stage("Git Checkout"){
             steps{
-                git credentialsId: 'javahome2', url: 'https://github.com/dots24/dot_webapp.git'
+                git credentialsId: 'javahome2', url: 'https://github.com/dots24/welcome2dot.git'
             }
         }
         stage("Maven Build"){
