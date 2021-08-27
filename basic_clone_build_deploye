@@ -1,0 +1,35 @@
+pipeline{
+    agent any
+    
+    environment{
+        PATH = "/opt/apache-maven-3.8.1/bin/:$PATH"
+    }
+    stages{
+        stage("Git Checkout"){
+            steps{
+                git credentialsId: 'javahome2', url: 'https://github.com/dots24/dot_webapp.git'
+            }
+        }
+        stage("Maven Build"){
+            steps{
+                sh "mvn clean package"
+                sh "mv target/*.war target/dotweb.war"
+            }
+        }
+        stage("Deploy-Dev"){
+            steps{
+                sshagent(['deploye_user']) {
+                sh """
+                    scp -o StrictHostKeyChecking=no /home/jenkins/workspace/mavenpipe/target/dot_webapp-1-SNAPSHOT.war ec2-user@10.100.2.112:/opt/apache-tomcat-8.5.69/webapps/
+					                    
+                    ssh ec2-user@10.100.2.112 /home/ec2-user/apache-tomcat-9.0.50/bin/shutdown.sh
+                    
+                    ssh ec2-user@10.100.2.112 /home/ec2-user/apache-tomcat-9.0.50/bin/startup.sh
+                
+                """
+            }
+            
+            }
+        }
+    }
+}
